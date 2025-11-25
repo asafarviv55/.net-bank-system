@@ -1,0 +1,55 @@
+﻿@page
+@model Bank.Pages.Loans.IndexModel
+
+@{
+    ViewData["Title"] = "Loans";
+}
+
+<h1>Loans</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Loan[0].current_interest_rate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Loan[0].next_payment_amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Loan[0].next_payment_date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Loan[0].original_loan_fund)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Loan[0].UserId)
+            </th>
+        </tr> 
+        </thead>
+    <tbody>
+@foreach (var item in Model.Loan) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.current_interest_rate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.next_payment_amount)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.next_payment_date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.original_loan_fund)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                <a asp-page="./Details" asp-route-id="@item.id">Details</a> |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

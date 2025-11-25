@@ -1,0 +1,61 @@
+﻿@page
+@model Bank.Pages.PassBackOperations.IndexModel
+
+@{
+    ViewData["Title"] = "PassBackOperations";
+}
+
+<h1>PassBackOperations</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PassBackOperation[0].created_at)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PassBackOperation[0].reference)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PassBackOperation[0].action)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PassBackOperation[0].right_balance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PassBackOperation[0].due_balance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PassBackOperation[0].account_balance)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.PassBackOperation) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.created_at)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.reference)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.action)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.right_balance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.due_balance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.account_balance)
+            </td>
+            <td>
+                <a asp-page="./Details" asp-route-id="@item.id">Details</a> |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

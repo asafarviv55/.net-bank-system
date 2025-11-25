@@ -1,0 +1,73 @@
+﻿@page
+@model Bank.Pages.CreditExpenses.IndexModel
+
+@{
+    ViewData["Title"] = "CreditExpenses";
+}
+
+<h1>CreditExpenses</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CreditExpense[0].amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreditExpense[0].card_number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreditExpense[0].credit_card_holder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreditExpense[0].credit_card_type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreditExpense[0].credit_company)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreditExpense[0].next_billing_date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreditExpense[0].card_number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreditExpense[0].credit_card_holder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreditExpense[0].credit_card_type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreditExpense[0].credit_company)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.CreditExpense) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.card_number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.credit_card_holder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.credit_card_type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.credit_company)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.next_billing_date)
+            </td>
+            <td>
+                <a asp-page="./Details" asp-route-id="@item.id">Details</a> |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

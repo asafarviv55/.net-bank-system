@@ -1,0 +1,36 @@
+﻿@page
+@model Bank.Pages.CreditExpenses.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>CreditExpense</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreditExpense.next_billing_date)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreditExpense.card_number)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreditExpense.amount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreditExpense.credit_card_holder)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreditExpense.credit_company)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreditExpense.credit_card_type)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
