@@ -28,6 +28,15 @@ public class BankContext : IdentityDbContext<ApplicationUser, ApplicationRole, i
     public DbSet<Budget> Budgets { get; set; }
     public DbSet<SpendingReport> SpendingReports { get; set; }
 
+    // New Features
+    public DbSet<Card> Cards { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
+    public DbSet<NotificationPreference> NotificationPreferences { get; set; }
+    public DbSet<CurrencyExchange> CurrencyExchanges { get; set; }
+    public DbSet<ExchangeRate> ExchangeRates { get; set; }
+    public DbSet<AuditLog> AuditLogs { get; set; }
+    public DbSet<SecurityEvent> SecurityEvents { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -48,6 +57,15 @@ public class BankContext : IdentityDbContext<ApplicationUser, ApplicationRole, i
         modelBuilder.Entity<SpendingCategory>().ToTable("SpendingCategory");
         modelBuilder.Entity<Budget>().ToTable("Budget");
         modelBuilder.Entity<SpendingReport>().ToTable("SpendingReport");
+
+        // New feature tables
+        modelBuilder.Entity<Card>().ToTable("Card");
+        modelBuilder.Entity<Notification>().ToTable("Notification");
+        modelBuilder.Entity<NotificationPreference>().ToTable("NotificationPreference");
+        modelBuilder.Entity<CurrencyExchange>().ToTable("CurrencyExchange");
+        modelBuilder.Entity<ExchangeRate>().ToTable("ExchangeRate");
+        modelBuilder.Entity<AuditLog>().ToTable("AuditLog");
+        modelBuilder.Entity<SecurityEvent>().ToTable("SecurityEvent");
 
         // Account relationships
         modelBuilder.Entity<Account>()
@@ -109,6 +127,46 @@ public class BankContext : IdentityDbContext<ApplicationUser, ApplicationRole, i
             .HasIndex(l => l.ApplicationNumber)
             .IsUnique();
 
+        // Card relationships
+        modelBuilder.Entity<Card>()
+            .HasOne(c => c.Account)
+            .WithMany()
+            .HasForeignKey(c => c.AccountId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Card>()
+            .HasIndex(c => c.CardNumber)
+            .IsUnique();
+
+        // Notification relationships
+        modelBuilder.Entity<Notification>()
+            .HasOne(n => n.User)
+            .WithMany()
+            .HasForeignKey(n => n.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Currency exchange relationships
+        modelBuilder.Entity<CurrencyExchange>()
+            .HasOne(e => e.SourceAccount)
+            .WithMany()
+            .HasForeignKey(e => e.SourceAccountId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<CurrencyExchange>()
+            .HasOne(e => e.User)
+            .WithMany()
+            .HasForeignKey(e => e.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<CurrencyExchange>()
+            .HasIndex(e => e.ReferenceNumber)
+            .IsUnique();
+
+        // Exchange rate unique constraint
+        modelBuilder.Entity<ExchangeRate>()
+            .HasIndex(er => new { er.BaseCurrency, er.TargetCurrency })
+            .IsUnique();
+
         // Seed default spending categories
         modelBuilder.Entity<SpendingCategory>().HasData(
             new SpendingCategory { Id = 1, Name = "Groceries", Color = "#4CAF50", Icon = "shopping_cart", IsSystem = true },
@@ -121,6 +179,18 @@ public class BankContext : IdentityDbContext<ApplicationUser, ApplicationRole, i
             new SpendingCategory { Id = 8, Name = "Travel", Color = "#607D8B", Icon = "flight", IsSystem = true },
             new SpendingCategory { Id = 9, Name = "Education", Color = "#3F51B5", Icon = "school", IsSystem = true },
             new SpendingCategory { Id = 10, Name = "Other", Color = "#9E9E9E", Icon = "category", IsSystem = true }
+        );
+
+        // Seed default exchange rates
+        modelBuilder.Entity<ExchangeRate>().HasData(
+            new ExchangeRate { Id = 1, BaseCurrency = "USD", TargetCurrency = "EUR", Rate = 0.92m, BuySpread = 0.02m, SellSpread = 0.02m, IsActive = true },
+            new ExchangeRate { Id = 2, BaseCurrency = "USD", TargetCurrency = "GBP", Rate = 0.79m, BuySpread = 0.02m, SellSpread = 0.02m, IsActive = true },
+            new ExchangeRate { Id = 3, BaseCurrency = "USD", TargetCurrency = "JPY", Rate = 149.50m, BuySpread = 0.02m, SellSpread = 0.02m, IsActive = true },
+            new ExchangeRate { Id = 4, BaseCurrency = "USD", TargetCurrency = "CAD", Rate = 1.36m, BuySpread = 0.02m, SellSpread = 0.02m, IsActive = true },
+            new ExchangeRate { Id = 5, BaseCurrency = "USD", TargetCurrency = "AUD", Rate = 1.52m, BuySpread = 0.02m, SellSpread = 0.02m, IsActive = true },
+            new ExchangeRate { Id = 6, BaseCurrency = "EUR", TargetCurrency = "USD", Rate = 1.09m, BuySpread = 0.02m, SellSpread = 0.02m, IsActive = true },
+            new ExchangeRate { Id = 7, BaseCurrency = "GBP", TargetCurrency = "USD", Rate = 1.27m, BuySpread = 0.02m, SellSpread = 0.02m, IsActive = true },
+            new ExchangeRate { Id = 8, BaseCurrency = "JPY", TargetCurrency = "USD", Rate = 0.0067m, BuySpread = 0.02m, SellSpread = 0.02m, IsActive = true }
         );
     }
 }

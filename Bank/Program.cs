@@ -8,6 +8,7 @@ var config = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddControllers();
 
 builder.Services.AddDbContext<BankContext>(options =>
     options.UseSqlServer(config.GetConnectionString("BankContext")));
@@ -21,6 +22,12 @@ builder.Services.AddScoped<ILoanService, LoanService>();
 builder.Services.AddScoped<IScheduledPaymentService, ScheduledPaymentService>();
 builder.Services.AddScoped<IStatementService, StatementService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+
+// Register new feature services
+builder.Services.AddScoped<ICardService, CardService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<ICurrencyExchangeService, CurrencyExchangeService>();
+builder.Services.AddScoped<IAuditService, AuditService>();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
@@ -90,5 +97,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.MapControllers();
 
 app.Run();
