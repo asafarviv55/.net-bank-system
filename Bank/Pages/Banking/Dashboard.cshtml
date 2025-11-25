@@ -1,0 +1,136 @@
+@page
+@model Bank.Pages.Banking.DashboardModel
+@{
+    ViewData["Title"] = "Account Dashboard";
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">Account Dashboard</h2>
+
+    <!-- Account Summary -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Balance</h5>
+                    <h2>@Model.TotalBalance.ToString("C")</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">This Month Income</h5>
+                    <h2>@Model.MonthlyIncome.ToString("C")</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <h5 class="card-title">This Month Expenses</h5>
+                    <h2>@Model.MonthlyExpenses.ToString("C")</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accounts List -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">My Accounts</h5>
+                    <a asp-page="CreateAccount" class="btn btn-sm btn-primary">+ New Account</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Account</th>
+                                    <th>Type</th>
+                                    <th>Balance</th>
+                                    <th>Available</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var account in Model.Accounts)
+                                {
+                                    <tr>
+                                        <td>
+                                            <strong>@account.AccountName</strong><br />
+                                            <small class="text-muted">@account.AccountNumber</small>
+                                        </td>
+                                        <td>@account.Type</td>
+                                        <td>@account.Balance.ToString("C")</td>
+                                        <td>@account.AvailableBalance.ToString("C")</td>
+                                        <td>
+                                            <a asp-page="Transactions" asp-route-id="@account.Id" class="btn btn-sm btn-outline-primary">History</a>
+                                            <a asp-page="Transfer" asp-route-fromId="@account.Id" class="btn btn-sm btn-outline-success">Transfer</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions & Recent Transactions -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Quick Actions</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a asp-page="Transfer" class="list-group-item list-group-item-action">Transfer Funds</a>
+                    <a asp-page="BillPayment" class="list-group-item list-group-item-action">Pay Bills</a>
+                    <a asp-page="Beneficiaries" class="list-group-item list-group-item-action">Manage Beneficiaries</a>
+                    <a asp-page="ScheduledPayments" class="list-group-item list-group-item-action">Scheduled Payments</a>
+                    <a asp-page="LoanApplication" class="list-group-item list-group-item-action">Apply for Loan</a>
+                    <a asp-page="Statements" class="list-group-item list-group-item-action">Account Statements</a>
+                    <a asp-page="Analytics" class="list-group-item list-group-item-action">Spending Analytics</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Recent Transactions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th class="text-end">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var txn in Model.RecentTransactions)
+                                {
+                                    <tr>
+                                        <td>@txn.CreatedAt.ToString("MMM dd")</td>
+                                        <td>@txn.Description</td>
+                                        <td><span class="badge bg-secondary">@txn.Category</span></td>
+                                        <td class="text-end @(txn.Amount >= 0 ? "text-success" : "text-danger")">
+                                            @txn.Amount.ToString("C")
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

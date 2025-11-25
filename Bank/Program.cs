@@ -1,5 +1,6 @@
 global using Bank.Data;
 global using Bank.Models;
+global using Bank.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,16 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<BankContext>(options =>
     options.UseSqlServer(config.GetConnectionString("BankContext")));
+
+// Register banking services
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<IBeneficiaryService, BeneficiaryService>();
+builder.Services.AddScoped<IBillPaymentService, BillPaymentService>();
+builder.Services.AddScoped<ILoanService, LoanService>();
+builder.Services.AddScoped<IScheduledPaymentService, ScheduledPaymentService>();
+builder.Services.AddScoped<IStatementService, StatementService>();
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {

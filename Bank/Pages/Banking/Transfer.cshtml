@@ -1,0 +1,104 @@
+@page
+@model Bank.Pages.Banking.TransferModel
+@{
+    ViewData["Title"] = "Fund Transfer";
+}
+
+<div class="container">
+    <h2 class="mb-4">Fund Transfer</h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.FromAccountId" class="form-label">From Account</label>
+                            <select asp-for="Input.FromAccountId" class="form-select" asp-items="Model.FromAccounts">
+                                <option value="">Select source account...</option>
+                            </select>
+                            <span asp-validation-for="Input.FromAccountId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Transfer Type</label>
+                            <div class="btn-group w-100" role="group">
+                                <input type="radio" class="btn-check" name="transferType" id="typeInternal" value="internal" checked onchange="toggleTransferType()">
+                                <label class="btn btn-outline-primary" for="typeInternal">Internal Account</label>
+
+                                <input type="radio" class="btn-check" name="transferType" id="typeBeneficiary" value="beneficiary" onchange="toggleTransferType()">
+                                <label class="btn btn-outline-primary" for="typeBeneficiary">Beneficiary</label>
+                            </div>
+                        </div>
+
+                        <div id="internalSection" class="mb-3">
+                            <label asp-for="Input.ToAccountId" class="form-label">To Account</label>
+                            <select asp-for="Input.ToAccountId" class="form-select" asp-items="Model.ToAccounts">
+                                <option value="">Select destination account...</option>
+                            </select>
+                            <span asp-validation-for="Input.ToAccountId" class="text-danger"></span>
+                        </div>
+
+                        <div id="beneficiarySection" class="mb-3" style="display: none;">
+                            <label asp-for="Input.BeneficiaryId" class="form-label">Beneficiary</label>
+                            <select asp-for="Input.BeneficiaryId" class="form-select" asp-items="Model.Beneficiaries">
+                                <option value="">Select beneficiary...</option>
+                            </select>
+                            <span asp-validation-for="Input.BeneficiaryId" class="text-danger"></span>
+                            <a asp-page="Beneficiaries" class="btn btn-link btn-sm">+ Add New Beneficiary</a>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Amount" class="form-label">Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input asp-for="Input.Amount" class="form-control" type="number" step="0.01" min="0.01" />
+                            </div>
+                            <span asp-validation-for="Input.Amount" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Description" class="form-label">Description (Optional)</label>
+                            <input asp-for="Input.Description" class="form-control" placeholder="Payment for..." />
+                            <span asp-validation-for="Input.Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Transfer Funds</button>
+                            <a asp-page="Dashboard" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Transfer Tips</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="mb-0">
+                        <li>Internal transfers are instant</li>
+                        <li>External transfers may take 1-3 business days</li>
+                        <li>Double-check account numbers</li>
+                        <li>You can set up recurring transfers in Scheduled Payments</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function toggleTransferType() {
+            var isInternal = document.getElementById('typeInternal').checked;
+            document.getElementById('internalSection').style.display = isInternal ? 'block' : 'none';
+            document.getElementById('beneficiarySection').style.display = isInternal ? 'none' : 'block';
+        }
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}
